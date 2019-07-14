@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "role": "Admin",
+    "email": "aranmu@example.com",
+    "password": "helloworld",
+    "name": "Aranmu Haesulla"
+  },
+  {
+    "id": 2,
+    "role": "Member",
+    "email": "neanthal@example.com",
+    "password": "worldhello",
+    "name": "Raga Z"
+  }
+]
