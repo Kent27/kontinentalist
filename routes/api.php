@@ -18,6 +18,10 @@ use Illuminate\Http\Request;
 // });
 
 
-Route::apiResources([
-    'posts' => 'API\PostController'
-]);
+Route::group(['middleware' => 'auth:api'], function()
+{
+    Route::apiResources([
+        'posts' => 'API\PostController'
+    ]);
+});
+Route::post('/login', 'API\UserController@login');
