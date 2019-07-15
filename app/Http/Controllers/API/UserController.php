@@ -32,14 +32,12 @@ class UserController extends Controller
                 'client_secret' => env('PASSPORT_CLIENT_SECRET'),
                 'username' => $request->email,
                 'password' => $request->password,
-                'scope' => $user->role==='Admin'?'users-manage-all':'users-manage-self',
+                'scope' => $user && $user->role==='Admin'?'users-manage-all':'users-manage-self',
             ],
         ]);
 
         if($response->getStatusCode() != 200){
-            return response()->json([
-                'message' => json_decode((string) $response->getBody())->message
-            ], $response->getStatusCode());
+            return errorResponse(50, json_decode((string) $response->getBody())->message, $response->getStatusCode());           
         }
 
         return json_decode((string) $response->getBody(), true);      
