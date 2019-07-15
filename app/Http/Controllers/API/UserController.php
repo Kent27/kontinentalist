@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth; 
 use GuzzleHttp\Client;
+use App\User;
 
 class UserController extends Controller
 {
@@ -17,11 +18,10 @@ class UserController extends Controller
             'password' => 'required|string'  
         ]);
         if ($validator->fails()) {
-            return response()->json([                               
-                'message'=> 'Input validation error',
-                'errors' => $validator->errors()
-            ], 400);
+            return errorResponse(100, 'Input validation error', 400, $validator->errors());                   
         }    
+
+        $user = User::where('email', $request->email)->first();
 
         $http = new \GuzzleHttp\Client(['http_errors' => false]);
        
@@ -32,7 +32,7 @@ class UserController extends Controller
                 'client_secret' => env('PASSPORT_CLIENT_SECRET'),
                 'username' => $request->email,
                 'password' => $request->password,
-                'scope' => '',
+                'scope' => $user->role==='Admin'?'users-manage-all':'users-manage-self',
             ],
         ]);
       

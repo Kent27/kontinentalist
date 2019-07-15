@@ -14,9 +14,14 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $posts = Post::all();
+        $posts = null;       
+        if ($request->user()->tokenCan('users-manage-all')) {
+            $posts = Post::all();
+        }else{
+            $posts = $request->user()->posts()->get();
+        }
 
         return response()->json([                               
             'result'=> $posts,
@@ -37,13 +42,10 @@ class PostController extends Controller
             'content' => 'required|string'  
         ]);
         if ($validator->fails()) {
-            return response()->json([                               
-                'message'=> 'Input validation error',
-                'errors' => $validator->errors()
-            ], 400);
+            return errorResponse(100, 'Input validation error', 400, $validator->errors());          
         }    
-
-        $authedUserId = 1;
+      
+        $authedUserId = $request->user()->id;
         $data = $request->only(['title', 'content']);
         $data['user_id'] = $authedUserId; 
         $post = Post::create($data);
@@ -57,13 +59,15 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        $post = Post::find($id);
+    public function show(Request $request, $id)
+    {            
+        $post = Post::find($id);        
+
         if(!$post){
-            return response()->json([                               
-                'message'=> 'Post not found'               
-            ], 400);
+            return errorResponse(101, 'Post not found', 404);           
+        }
+        if (!$request->user()->tokenCan('users-manage-all') && $post->user->id != $request->user()->id) {
+            return errorResponse(62, 'Sorry, you are not authorized to access this post', 403);                 
         }
 
         return $post;
@@ -78,23 +82,21 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $post = Post::find($id);
+        if(!$post){
+            return errorResponse(101, 'Post not found', 404);              
+        }
+        if (!$request->user()->tokenCan('users-manage-all') && $post->user->id != $request->user()->id) {
+            return errorResponse(62, 'Sorry, you are not authorized to access this post', 403);                         
+        }
+
         $validator = Validator::make($request->all(), [
             'title' => 'required_without_all:content|string|unique:posts|max:255',         
             'content' => 'required_without_all:title|string'  
         ]);
         if ($validator->fails()) {
-            return response()->json([                               
-                'message'=> 'Input validation error',
-                'errors' => $validator->errors()
-            ], 400);
-        }    
-
-        $post = Post::find($id);
-        if(!$post){
-            return response()->json([                               
-                'message'=> 'Post not found'               
-            ], 400);
-        }
+            return errorResponse(100, 'Input validation error', 400, $validator->errors());               
+        }            
 
         $data = $request->only(['title', 'content']);   
         $post->fill($data);
@@ -109,13 +111,14 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $post = Post::find($id);
         if(!$post){
-            return response()->json([                               
-                'message'=> 'Post not found'               
-            ], 400);
+            return errorResponse(101, 'Post not found', 404);        
+        }
+        if (!$request->user()->tokenCan('users-manage-all') && $post->user->id != $request->user()->id) {
+            return errorResponse(62, 'Sorry, you are not authorized to access this post', 403);               
         }
 
         $post->delete();

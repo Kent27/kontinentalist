@@ -27,5 +27,14 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Passport::routes();
+
+        Passport::tokensCan([
+            'users-manage-all' => 'Manage All User',
+            'users-manage-self' => 'Manage Self User',
+        ]);
+
+        Passport::setDefaultScope([
+            'users-manage-self',           
+        ]);
     }
 }
