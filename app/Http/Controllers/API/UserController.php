@@ -35,7 +35,13 @@ class UserController extends Controller
                 'scope' => $user->role==='Admin'?'users-manage-all':'users-manage-self',
             ],
         ]);
-      
+
+        if($response->getStatusCode() != 200){
+            return response()->json([
+                'message' => json_decode((string) $response->getBody())->message
+            ], $response->getStatusCode());
+        }
+
         return json_decode((string) $response->getBody(), true);      
     }
 
