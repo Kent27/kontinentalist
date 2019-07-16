@@ -31,6 +31,7 @@ class MainDashboard extends React.Component {
         openDelete: false,
         openedData: {},
         activePage: 0,
+        category: '',
         anchorElMore: null,
         selectedIdMore: '0',  
         statusMore: false,
@@ -39,7 +40,7 @@ class MainDashboard extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     if( (this.props.fetched && !prevProps.fetched) && !this.props.error ){
-        const options = {offset: this.state.activePage*20}
+        const options = {offset: this.state.activePage*20, sort: this.state.sort}
         this.props.dispatch(getAllPost(options));
         this.handleClose();
     }
@@ -58,6 +59,13 @@ class MainDashboard extends React.Component {
   }
 
   handleSubmitDelete = () => {
+   if(this.props.post.total -1 > 0){
+        //if on the last page, -1 to current page 
+        if(Math.ceil(this.props.post.total/maxData) === this.state.activePage+1 && this.props.post.total%maxData===1){
+            this.setState({activePage: this.state.activePage - 1})
+        }
+    }         
+
     this.props.dispatch(deletePost(this.state.openedData));        
   }
 
@@ -90,7 +98,8 @@ class MainDashboard extends React.Component {
     return (                   
         <div className={classes.container}>  
             <Button style={{marginBottom: 30}} variant="contained" onClick={this.handleOpen('open')}>Add New Post</Button>                       
-            <MainDashboardTable handleMore={this.handleMore} handleChange={this.handleChange} handleSelectPost={this.handleSelectPost}/>
+            <MainDashboardTable activePage={this.state.activePage}
+                handleMore={this.handleMore} handleChange={this.handleChange} handleSelectPost={this.handleSelectPost}/>
 
             {/* More menu */}
             <Menu

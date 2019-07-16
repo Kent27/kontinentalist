@@ -1,15 +1,8 @@
 import React from "react";
 import ReactTable from "react-table";
 import 'react-table/react-table.css'
-// import Checkbox from '@material-ui/core/Checkbox';
-// import Button from '@material-ui/core/Button';
-// import matchSorter from 'match-sorter'
 import Pagination from "./customTable/Pagination";
-// import ThComponent from "../../components/customTable/ThComponent";
-// import ActionCell from "./ActionCell";
 import MoreHoriz from '@material-ui/icons/MoreHoriz';
-// import Menu from '@material-ui/core/Menu';
-// import MenuItem from '@material-ui/core/MenuItem';
 import IconButton from '@material-ui/core/IconButton';
 import {withRouter} from 'react-router-dom'
 import { getAllPost } from '../actions/DashboardActions';
@@ -35,47 +28,33 @@ class MainDashboardTable extends React.Component {
             this.setState({loading: false});
         }
        
-       if( (this.props.fetchedGetAllPost && !prevProps.fetchedGetAllPost) || (JSON.stringify(this.props.post)!==JSON.stringify(prevProps.post)) ){
-            // if(this.props.reset && !prevProps.reset){            
-            //     if(this.props.category){
-            //         const sortId = this.props.category.substring(0, this.props.category.indexOf('-'));
-            //         const sortDescOri = this.props.category.substring(this.props.category.indexOf('-'));
-            //         const sortDesc = sortDescOri==='-desc'?true:false;
-            //         this.table.state.sorted=[{id: sortId, desc: sortDesc}];
-            //     }                
-            //     this.table.state.page=0;                     
-            // } 
+       if( (this.props.fetchedGetAllPost && !prevProps.fetchedGetAllPost) || (JSON.stringify(this.props.post)!==JSON.stringify(prevProps.post)) ){           
             this.setState({
                 data: this.props.post?this.props.post.result:undefined,
                 pages: this.props.post.total>0?Math.ceil(+this.props.post.total/maxData):1,
                 loading: false
-            });
-           
-        }              
+            });           
+        }       
+        
+        //change page if parent component changes it
+        if( (this.props.activePage !== prevProps.activePage) && this.props.activePage!==this.table.state.page){         
+            this.table.state.page = this.props.activePage;
+        }   
       }
 
     fetchData = (state, instance) => {
-      
-        // Whenever the table model changes, or the user sorts or changes pages, this method gets called and passed the current table model.
-        // You can set the `loading` prop of the table to true to use the built-in one or show you're own loading bar if you want.
-        this.setState({ loading: true });
-        // Request the data however you want.  Here, we'll use our mocked service we created earlier
-      
+        this.setState({ loading: true });           
+        
         const order = state.sorted[0] && state.sorted[0].desc?'-desc':'-asc';
         let sorted = state.sorted[0] && `${state.sorted[0].id}${order}`;   
-    
         if(!sorted || sorted===undefined){
             sorted=this.props.category;
         }
+        this.props.handleChange('sort', sorted);
 
-        // this.props.handleChange('category', sorted);//set state category
-        // if(this.props.selectedCollectionId){
-        //     this.props.dispatch((getCollection(this.props.selectedCollectionId)));
-        // }else{
-            const options = {offset: state.page*20/*, sort: sorted, q: this.props.searchKeyword*/}
-            this.props.dispatch(getAllPost(options));        
-        // }              
-      }
+        const options = {offset: state.page*20, sort: sorted}
+        this.props.dispatch(getAllPost(options));                    
+    }
 
     render(){    
         const { data, pages, loading } = this.state;
@@ -91,20 +70,15 @@ class MainDashboardTable extends React.Component {
                 defaultPageSize={data && data.length<maxData?data.length:maxData}
                 pages={pages} // Display the total number of pages
                 loading={loading} // Display the loading overlay when we need it
-                onFetchData={this.fetchData} // Request new data when things change     
-                // filterable= {true}    
-                // defaultFilterMethod= {(filter, row, column) => {                   
-                //     return matchSorter(row, filter.value, { keys: [filter.id] })
-                // }}          
+                onFetchData={this.fetchData} // Request new data when things change                    
                 resizable={false}                                
                 columns={[    
                     {
                         Header: 'Author',
-                        accessor: 'user_name',
-                        Cell: props => <span title={props.value}>{props.value}</span>,          
+                        accessor: 'user_id',
+                        Cell: props => <span title={props.value}>{props.original.user_name}</span>,          
                         style: centerPointerCell,                          
-                        filterAll: true,
-                        sortable: false,
+                        filterAll: true,                        
                         headerStyle: headerStyle             
                     },       
                     {
@@ -112,8 +86,7 @@ class MainDashboardTable extends React.Component {
                         accessor: 'title',
                         Cell: props => <span title={props.value}>{props.value}</span>,          
                         style: centerPointerCell,                          
-                        filterAll: true,
-                        sortable: false,
+                        filterAll: true,                        
                         headerStyle: headerStyle             
                     },   
                     {
@@ -121,8 +94,7 @@ class MainDashboardTable extends React.Component {
                         accessor: 'content',
                         Cell: props => <span>{props.value}</span>,          
                         style: centerPointerCell,                          
-                        filterAll: true,
-                        sortable: false,
+                        filterAll: true,                        
                         headerStyle: headerStyle             
                     },                                                            
                     {
@@ -130,8 +102,7 @@ class MainDashboardTable extends React.Component {
                         accessor: 'created_at',                       
                         Cell: props =>  <span>{ `${(new Date(props.value)).getDate()} ${month[(new Date(props.value)).getMonth()]} ${(new Date(props.value)).getFullYear()}` }</span>,                        
                         style: centerPointerCell,                          
-                        filterAll: true,
-                        sortable: false,
+                        filterAll: true,                        
                         headerStyle: headerStyle                
                     },     
                     {
@@ -139,8 +110,7 @@ class MainDashboardTable extends React.Component {
                         accessor: 'updated_at',                 
                         Cell: props =>  <span>{ `${(new Date(props.value)).getDate()} ${month[(new Date(props.value)).getMonth()]} ${(new Date(props.value)).getFullYear()}` }</span>,                        
                         style: centerPointerCell,                          
-                        filterAll: true,
-                        sortable: false,
+                        filterAll: true,                        
                         headerStyle: headerStyle      
                     },                                                            
                     {     
@@ -160,8 +130,7 @@ class MainDashboardTable extends React.Component {
                         width: 75,
                     }
                 ]}          
-                PaginationComponent = {Pagination}
-                // ThComponent = {ThComponent}            
+                PaginationComponent = {Pagination}                       
                 getTdProps={(state, rowInfo, column, instance) => {
                     return {
                         onClick: (e, handleOriginal) => {                       
@@ -193,7 +162,7 @@ class MainDashboardTable extends React.Component {
                     }              
                     };
                 }}  
-                onPageChange={(pageIndex) => {                     
+                onPageChange={(pageIndex) => {                  
                     this.props.handleChange('activePage', pageIndex);                 
                  }}       
                 /> 

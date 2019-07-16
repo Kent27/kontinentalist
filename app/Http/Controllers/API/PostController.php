@@ -17,16 +17,22 @@ class PostController extends Controller
      */
     public function index(Request $request)
     {
+        $count = 20;
+        $offset = $request->offset ?: 0;
+        $total = 0;
         $posts = null;       
-        if ($request->user()->tokenCan('users-manage-all')) {
-            $posts = PostResource::collection(Post::all());
+        $sortArray = $request->sort ? explode("-", $request->sort) : ['id', 'asc'];
+        if ($request->user()->tokenCan('users-manage-all')) {            
+            $posts = PostResource::collection(Post::with('user')->skip($offset)->take($count)->orderBy($sortArray[0], $sortArray[1])->get());   
+            $total = Post::all()->count();
         }else{
-            $posts = PostResource::collection($request->user()->posts()->get());
+            $posts = PostResource::collection($request->user()->posts()->skip($offset)->take($count)->orderBy($sortArray[0], $sortArray[1])->get());
+            $total = $request->user()->posts()->get()->count();           
         }
 
         return response()->json([                               
             'result'=> $posts,
-            'total' => $posts->count()
+            'total' => $total
         ]);  
     }
 
