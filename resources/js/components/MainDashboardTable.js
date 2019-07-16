@@ -100,7 +100,7 @@ class MainDashboardTable extends React.Component {
                 columns={[    
                     {
                         Header: 'Author',
-                        accessor: 'user.name',
+                        accessor: 'user_name',
                         Cell: props => <span title={props.value}>{props.value}</span>,          
                         style: centerPointerCell,                          
                         filterAll: true,

@@ -6,6 +6,7 @@ use Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Post;
+use App\Http\Resources\Post as PostResource;
 
 class PostController extends Controller
 {
@@ -18,9 +19,9 @@ class PostController extends Controller
     {
         $posts = null;       
         if ($request->user()->tokenCan('users-manage-all')) {
-            $posts = Post::all();
+            $posts = PostResource::collection(Post::all());
         }else{
-            $posts = $request->user()->posts()->get();
+            $posts = PostResource::collection($request->user()->posts()->get());
         }
 
         return response()->json([                               
@@ -50,7 +51,7 @@ class PostController extends Controller
         $data['user_id'] = $authedUserId; 
         $post = Post::create($data);
 
-        return $post;
+        return new PostResource($post);
     }
 
     /**
@@ -61,7 +62,7 @@ class PostController extends Controller
      */
     public function show(Request $request, $id)
     {            
-        $post = Post::find($id);        
+        $post = new PostResource(Post::find($id));        
 
         if(!$post){
             return errorResponse(101, 'Post not found', 404);           
@@ -82,7 +83,7 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $post = Post::find($id);
+        $post = new PostResource(Post::find($id));
         if(!$post){
             return errorResponse(101, 'Post not found', 404);              
         }
