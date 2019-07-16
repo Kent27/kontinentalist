@@ -1,72 +1,64 @@
-<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
+# Kontinentalist Full Stack Developer Test - Alvin Theodora
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+## Alvin's Task Description
 
-## About Laravel
+- Using [Laravel](https://laravel.com/) as PHP framework
+- Using [React](https://reactjs.org/) as SPA frontend JavaScript library
+- Using [Docker](https://www.docker.com/) as web app container
+- Route:
+    - **Webpage**: Using SPA [React-Router-DOM](https://reacttraining.com/react-router/web/guides/quick-start)
+    - **API**, all routes are prefixed with `/api`
+        - `POST /login` to login
+        - `GET /posts` to retrieve posts list, with optional query parameter `sort` and `offset`.
+        - `GET /posts/{id}`  to retrieve a single post.
+        - `POST /posts` to create a post.
+        - `PATCH /posts/{id}` to update a post.
+        - `DELETE /posts/{id}` to delete a post.
+- Authentication and Token Scope Authorization using [Laravel Passport](https://laravel.com/docs/5.8/passport) with OAuth2 Password Grant Token method.
+- Fresh installation will have a database seeder filling `users` table with the given `user.json` file
+- Execute command with `docker-compose exec app ...`, e.x.: `docker-compose exec app php artisan`
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Deployment Architecture Design
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+![Deployment Architecture Design](readme/Deployment-Architecture-Design.png)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## ERD
 
-## Learning Laravel
+![ERD](readme/ERD.png)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## API Documentation
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1400 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+[Postman Docs kontinentalist](https://documenter.getpostman.com/view/3236947/SVSKLoso?version=latest).
+Postman collection is available in `kontinentalist.postman_collection.json`
 
-## Laravel Sponsors
+## Requirement
+* [Docker](https://docs.docker.com/install/)
+* [Docker Compose](https://docs.docker.com/compose/install/)
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+## Setup - Development
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- [UserInsights](https://userinsights.com)
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
-- [Invoice Ninja](https://www.invoiceninja.com)
-- [iMi digital](https://www.imi-digital.de/)
-- [Earthlink](https://www.earthlink.ro/)
-- [Steadfast Collective](https://steadfastcollective.com/)
-- [We Are The Robots Inc.](https://watr.mx/)
-- [Understand.io](https://www.understand.io/)
-- [Abdel Elrafa](https://abdelelrafa.com)
-- [Hyper Host](https://hyper.host)
+### **1. Clone the repository**
 
-## Contributing
+```bash
+git clone https://github.com/alvintheodora/kontinentalist.git
+cd kontinentalist
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### **2. Scripts**
 
-## Security Vulnerabilities
+- `bash generate.sh` -> for first time installing
+- `bash start.sh` -> for starting docker containers on second time and so on 
+- `bash stop.sh` -> for stopping running containers without removing them
+- `docker-compose down` -> for stopping containers and removes containers, networks, volumes, and images created by `up`.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### **3. Passport Setup**
 
-## License
+After running `bash generate.sh`, you will see the Client ID and Client Secret in the log. 
+- Client ID 1 is for personal access client 
+- Client ID 2 is for password grant client
+Since we use password grant token method, copy the value of Client ID 2 and the secret to `.env` file, `PASSPORT_CLIENT_ID` and `PASSPORT_CLIENT_SECRET`
 
-The Laravel framework is open-source software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+![passport-instruction](readme/passport-instruction.png)
+
+
+Then web application is available on [http://localhost:8080/](http://localhost:8080/)
