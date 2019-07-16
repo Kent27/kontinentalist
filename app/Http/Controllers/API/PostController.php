@@ -68,9 +68,9 @@ class PostController extends Controller
      */
     public function show(Request $request, $id)
     {            
-        $post = new PostResource(Post::find($id));        
+        $post = new PostResource(Post::find($id));   
 
-        if(!$post){
+        if(!$post->resource){
             return errorResponse(101, 'Post not found', 404);           
         }
         if (!$request->user()->tokenCan('users-manage-all') && $post->user->id != $request->user()->id) {
@@ -90,7 +90,7 @@ class PostController extends Controller
     public function update(Request $request, $id)
     {
         $post = new PostResource(Post::find($id));
-        if(!$post){
+        if(!$post->resource){
             return errorResponse(101, 'Post not found', 404);              
         }
         if (!$request->user()->tokenCan('users-manage-all') && $post->user->id != $request->user()->id) {
