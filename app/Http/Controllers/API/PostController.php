@@ -6,6 +6,7 @@ use Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Post;
+use App\Http\Resources\Post as PostResource;
 
 class PostController extends Controller
 {
@@ -16,16 +17,22 @@ class PostController extends Controller
      */
     public function index(Request $request)
     {
+        $count = 20;
+        $offset = $request->offset ?: 0;
+        $total = 0;
         $posts = null;       
-        if ($request->user()->tokenCan('users-manage-all')) {
-            $posts = Post::all();
+        $sortArray = $request->sort ? explode("-", $request->sort) : ['id', 'asc'];
+        if ($request->user()->tokenCan('users-manage-all')) {            
+            $posts = PostResource::collection(Post::with('user')->skip($offset)->take($count)->orderBy($sortArray[0], $sortArray[1])->get());   
+            $total = Post::all()->count();
         }else{
-            $posts = $request->user()->posts()->get();
+            $posts = PostResource::collection($request->user()->posts()->skip($offset)->take($count)->orderBy($sortArray[0], $sortArray[1])->get());
+            $total = $request->user()->posts()->get()->count();           
         }
 
         return response()->json([                               
             'result'=> $posts,
-            'total' => $posts->count()
+            'total' => $total
         ]);  
     }
 
@@ -50,7 +57,7 @@ class PostController extends Controller
         $data['user_id'] = $authedUserId; 
         $post = Post::create($data);
 
-        return $post;
+        return new PostResource($post);
     }
 
     /**
@@ -61,9 +68,9 @@ class PostController extends Controller
      */
     public function show(Request $request, $id)
     {            
-        $post = Post::find($id);        
+        $post = new PostResource(Post::find($id));   
 
-        if(!$post){
+        if(!$post->resource){
             return errorResponse(101, 'Post not found', 404);           
         }
         if (!$request->user()->tokenCan('users-manage-all') && $post->user->id != $request->user()->id) {
@@ -82,8 +89,8 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $post = Post::find($id);
-        if(!$post){
+        $post = new PostResource(Post::find($id));
+        if(!$post->resource){
             return errorResponse(101, 'Post not found', 404);              
         }
         if (!$request->user()->tokenCan('users-manage-all') && $post->user->id != $request->user()->id) {
@@ -91,7 +98,7 @@ class PostController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'title' => 'required_without_all:content|string|unique:posts|max:255',         
+            'title' => 'required_without_all:content|string|max:255|unique:posts,title,'.$post->id,         
             'content' => 'required_without_all:title|string'  
         ]);
         if ($validator->fails()) {
