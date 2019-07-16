@@ -3,12 +3,15 @@ import { withStyles } from "@material-ui/core/";
 import { compose } from "redux";
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom'
-import { getPost } from "../actions/DashboardActions";
+import { getPost, resetSinglePost } from "../actions/DashboardActions";
 import IconButton from '@material-ui/core/IconButton';
 import BackIcon from '@material-ui/icons/ArrowBackIos';
 
 class Post extends React.Component {  
 
+  componentWillUnmount(){
+    this.props.dispatch(resetSinglePost());
+  }
   componentDidMount(){
     this.props.dispatch(getPost(this.props.match.params.id));
   }
@@ -50,81 +53,7 @@ const styles = theme => ({
     title: {
         fontSize: 20,
         padding: '20px 0px',
-    },
-    dividerTop: {
-        borderBottom: '24px solid #EF9634',
-        paddingTop: 30,
-        marginBottom: 3,
-    },    
-    dividerTopSmall: {
-        borderBottom: '3px solid #EF9634',
-        // marginTop: 30,
-    }, 
-    centerContainer: {
-        textAlign: 'center',
-        boxSizing: 'border-box',
-        // minHeight: '100vh',
-    },  
-    bold: {
-        fontWeight: 'bold',
-    },
-    button: {     
-        marginBottom: 20,    
-        boxShadow: 'unset',
-        "&:active": {
-          boxShadow: 'unset'
-        },
-      },
-      gifLoader: {
-        position: 'absolute',
-        right: 10,
-        top: 19,
-    },
-    formTitle: {
-        flex: 1,
-        fontSize: 25,
-    },
-    shownError: {
-        display: 'block',
-        color: '#f44336',
-        fontWeight: 100,
-    }, 
-     hidden: {
-         display: 'none',
-     },    
-      error: {
-        color: '#f44336',
-        fontSize: '0.75rem',
-        margin: '10px auto',
-      },
-      footerImage: {
-          opacity: .5,
-      },
-      successTitle: {
-        marginBottom: 20,
-      },
-      noHover: {
-          backgroundColor: '#EF9634',
-          "&:hover": {
-            backgroundColor: '#EF9634'
-          },
-      },
-      red: {
-        color: '#f04047'
-    },
-    noOverflow: {
-        overflowY: 'unset',
-    },
-    closeWindowIcon: {
-        position: 'absolute',
-        right: 0,
-        top: 0,
-        cursor: 'pointer',
-        padding: 6
-    }, 
-    dialogContent: {
-        padding: '8px 24px 24px 24px'
-    },
+    },                    
     backIconButton: {
         fontSize: 16
     }

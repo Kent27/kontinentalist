@@ -221,27 +221,14 @@ const styles = theme => ({
     dividerTopSmall: {
         borderBottom: '3px solid #EF9634',
         // marginTop: 30,
-    }, 
-    centerContainer: {
-        textAlign: 'center',
-        boxSizing: 'border-box',
-        // minHeight: '100vh',
-    },  
-    bold: {
-        fontWeight: 'bold',
-    },
+    },      
     button: {     
         marginBottom: 20,    
         boxShadow: 'unset',
         "&:active": {
           boxShadow: 'unset'
         },
-      },
-      gifLoader: {
-        position: 'absolute',
-        right: 10,
-        top: 19,
-    },
+      },    
     formTitle: {
         flex: 1,
         fontSize: 25,
@@ -258,13 +245,7 @@ const styles = theme => ({
         color: '#f44336',
         fontSize: '0.75rem',
         margin: '10px auto',
-      },
-      footerImage: {
-          opacity: .5,
-      },
-      successTitle: {
-        marginBottom: 20,
-      },
+      },         
       noHover: {
           backgroundColor: '#EF9634',
           "&:hover": {

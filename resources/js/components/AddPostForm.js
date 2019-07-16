@@ -9,7 +9,7 @@ import { connect } from 'react-redux'
 
 class AddPostForm extends React.Component {  
   render(){
-    const { handleSubmit, classes, error } = this.props;
+    const { handleSubmit, error } = this.props;
     return (
         <form onSubmit={handleSubmit}>
             <Grid container spacing={4}>                
@@ -31,32 +31,6 @@ class AddPostForm extends React.Component {
   }
 };
 
-const styles = theme => ({
-    caption: {
-        fontSize: 12,
-        color: '#58595B'
-    },
-    noMargin: {
-        margin: 0,
-    },
-    secondField: {
-        marginTop: 58,
-        [theme.breakpoints.down('xs')]: {
-            marginTop: 24,
-        },
-    },
-    spaceBetween: {
-        justifyContent: 'space-between',
-    },
-    flex1Basis: {
-        flex: 1,
-        flexBasis: 'inherit',
-    },
-    flexBasis: {
-        flexBasis: 'inherit',
-    }         
-})
-
 const shownError = {
     display: 'block',
     color: '#f44336',
@@ -73,4 +47,4 @@ function mapStateToProps(state) {
 export default reduxForm({
     form: "AddPostForm",
     validate: validateToString,    
-})(connect(mapStateToProps)(withStyles(styles)(AddPostForm)))
+})(connect(mapStateToProps)(AddPostForm))

@@ -3,7 +3,6 @@ import ReduxTextField from "./reduxForm/ReduxTextField";
 import Grid from "@material-ui/core/Grid"
 import {Field, reduxForm} from "redux-form"
 import validateToString from "../utils/ValidatorToString"
-import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux'
 
 
@@ -12,7 +11,7 @@ class EditPostForm extends React.Component {
     this.props.initialize(this.props.data);
   }
   render(){
-    const { handleSubmit, classes, error } = this.props;
+    const { handleSubmit, error } = this.props;
     return (
         <form onSubmit={handleSubmit}>
             <Grid container spacing={4}>                
@@ -34,32 +33,6 @@ class EditPostForm extends React.Component {
   }
 };
 
-const styles = theme => ({
-    caption: {
-        fontSize: 12,
-        color: '#58595B'
-    },
-    noMargin: {
-        margin: 0,
-    },
-    secondField: {
-        marginTop: 58,
-        [theme.breakpoints.down('xs')]: {
-            marginTop: 24,
-        },
-    },
-    spaceBetween: {
-        justifyContent: 'space-between',
-    },
-    flex1Basis: {
-        flex: 1,
-        flexBasis: 'inherit',
-    },
-    flexBasis: {
-        flexBasis: 'inherit',
-    }         
-})
-
 const shownError = {
     display: 'block',
     color: '#f44336',
@@ -76,4 +49,4 @@ function mapStateToProps(state) {
 export default reduxForm({
     form: "EditPostForm",
     validate: validateToString,    
-})(connect(mapStateToProps)(withStyles(styles)(EditPostForm)))
+})(connect(mapStateToProps)(EditPostForm))

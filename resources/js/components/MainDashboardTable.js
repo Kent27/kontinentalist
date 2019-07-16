@@ -181,13 +181,8 @@ class MainDashboardTable extends React.Component {
 
 const actionCell = {    
     whiteSpace: 'normal',
-    textAlign: 'center',
-    // opacity: 0
+    textAlign: 'center',    
 }
-// const buttonAction = {    
-//     margin: '5px',
-//     opacity: '1'
-// }
 
 const centerPointerCell = {
     textAlign: 'center',

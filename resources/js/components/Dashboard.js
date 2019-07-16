@@ -78,14 +78,6 @@ const styles = theme => ({
         margin: '20px 0 5px 0',
         borderColor: 'rgba(0,0,0,0.12)',
     },
-    footer: {
-        paddingTop: 20,
-        textAlign: 'center',
-    },
-    title: {
-        fontSize: 20,
-        padding: '20px 0px',
-    },
     dividerTop: {
         borderBottom: '24px solid #EF9634',
         paddingTop: 30,
@@ -94,54 +86,7 @@ const styles = theme => ({
     dividerTopSmall: {
         borderBottom: '3px solid #EF9634',
         // marginTop: 30,
-    }, 
-    centerContainer: {
-        textAlign: 'center',
-        boxSizing: 'border-box',
-        // minHeight: '100vh',
-    },  
-    bold: {
-        fontWeight: 'bold',
-    },
-    button: {
-        fontSize: 16,  
-        // width: 153.201,
-        // height: 35,  
-        margin: '20px auto',
-        display: 'block',
-        letterSpacing: '1.5px',
-        padding: '16px 32px',
-        background: '#EF9634',      
-        boxShadow: 'unset',
-        "&:active": {
-          boxShadow: 'unset'
-        },
-      },
-      gifLoader: {
-        position: 'absolute',
-        right: 10,
-        top: 19,
-    },
-     hidden: {
-         display: 'none',
-     },    
-      error: {
-        color: '#f44336',
-        fontSize: '0.75rem',
-        margin: '10px auto',
-      },
-      footerImage: {
-          opacity: .5,
-      },
-      successTitle: {
-        marginBottom: 20,
-      },
-      noHover: {
-          backgroundColor: '#EF9634',
-          "&:hover": {
-            backgroundColor: '#EF9634'
-          },
-      }
+    },                
 })
 
 function mapStateToProps(state) {

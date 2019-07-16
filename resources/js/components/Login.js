@@ -81,10 +81,7 @@ const styles = theme => ({
         textAlign: 'center',
         boxSizing: 'border-box',
         // minHeight: '100vh',
-    },  
-    bold: {
-        fontWeight: 'bold',
-    },
+    },    
     button: {
         fontSize: 16,  
         // width: 153.201,
@@ -98,26 +95,12 @@ const styles = theme => ({
         "&:active": {
           boxShadow: 'unset'
         },
-      },
-      gifLoader: {
-        position: 'absolute',
-        right: 10,
-        top: 19,
-    },
-     hidden: {
-         display: 'none',
-     },    
+      },     
       error: {
         color: '#f44336',
         fontSize: '0.75rem',
         margin: '10px auto',
-      },
-      footerImage: {
-          opacity: .5,
-      },
-      successTitle: {
-        marginBottom: 20,
-      },
+      },   
       noHover: {
           backgroundColor: '#EF9634',
           "&:hover": {

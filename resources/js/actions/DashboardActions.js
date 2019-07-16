@@ -18,7 +18,7 @@ import axios from "axios";
   export function getPost(id) { 
     return dispatch => {
       dispatch({
-        type: "GET_POST",    
+        type: "GET_SINGLE_POST",    
         payload: axios.get(
           `${process.env.MIX_HOSTNAME}/api/posts/${id}`,                
           {       
@@ -29,4 +29,11 @@ import axios from "axios";
     }
   }
 
+  export function resetSinglePost() { 
+    return dispatch => {
+      dispatch({
+        type: "RESET_SINGLE_POST",     
+      })
+    }
+  }
 
