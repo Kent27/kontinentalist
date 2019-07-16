@@ -4,19 +4,15 @@ import { compose } from "redux";
 import { connect } from 'react-redux';
 import { Route, Switch, withRouter } from 'react-router-dom'
 import MainDashboard from './MainDashboard'
-// import { getProfile } from "../actions/DashboardActions";
+import Post from './Post'
 
 class Dashboard extends React.Component {  
 
-  componentDidMount() {
-    //   this.props.dispatch(getProfile());
-  }
-
-  componentDidUpdate(prevProps, prevState) {   
+  componentDidUpdate(prevProps, prevState) {  
     //error handling
-    if(this.props.errorDashboard && this.props.errorDashboard.status==="Unauthenticated"){
+    if(this.props.errorDashboard && this.props.errorDashboard.message==="Unauthenticated."){
         alert('session expired, logging out');
-        // this.handleLogout();  
+        this.handleLogout();  
     }else if(this.props.errorDashboard==='ECONNABORTED'){
         alert('timeout reached, please refresh the window');
         // window.location.reload();
@@ -44,8 +40,9 @@ class Dashboard extends React.Component {
 
                 <hr className={classes.divider}/>
 
-                <Switch>
-                    <Route exact path={`/`} component={MainDashboard} />                                     
+                <Switch>                 
+                    <Route exact path={`/`} component={MainDashboard} />      
+                    <Route path={`/:id`} component={Post} />                                 
                 </Switch>                                                                                                                   
                                     
             </div>                  

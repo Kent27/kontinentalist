@@ -2,12 +2,20 @@ const initialState = {};
 
 export default function(state=initialState, action){  
     switch(action.type){            
-        case 'GET_ALL_USER_PENDING':
-            return {...state, fetchingGetAllUser: true, fetchedGetAllUser: false};
-        case 'GET_ALL_USER_REJECTED':
-            return {...state, fetchingGetAllUser: false, error: action.payload.response && action.payload.response.data, user: null, userTotal: null,}
-        case 'GET_ALL_USER_FULFILLED':            
-            return {...state, fetchingGetAllUser: false, fetchedGetAllUser: true, user: action.payload.data.data, userTotal: action.payload.data.total};
+        case 'GET_ALL_POST_PENDING':
+            return {...state, fetchingGetAllPost: true, error: null, fetchedGetAllPost: false};
+        case 'GET_ALL_POST_REJECTED':
+            return {...state, fetchingGetAllPost: false, error: action.payload.response && action.payload.response.data, post: null}
+        case 'GET_ALL_POST_FULFILLED':            
+            return {...state, fetchingGetAllPost: false, fetchedGetAllPost: true, post: action.payload.data};
+            
+        case 'GET_POST_PENDING':
+            return {...state, fetchingGetSinglePost: true, error: null, fetchedGetSinglePost: false};
+        case 'GET_POST_REJECTED':
+            return {...state, fetchingGetSinglePost: false, error: action.payload.response && action.payload.response.data, singlePost: null}
+        case 'GET_POST_FULFILLED':            
+            return {...state, fetchingGetSinglePost: false, fetchedGetSinglePost: true, singlePost: action.payload.data};
+        
 
         default:
             return state;

@@ -2,11 +2,11 @@ const initialState = {};
 
 export default function(state=initialState, action){  
     switch(action.type){                      
-        case 'SIGN_IN_PENDING':
+        case 'LOGIN_PENDING':
             return {...state, fetching: true, fetched: false, error: null};
-        case 'SIGN_IN_REJECTED':
+        case 'LOGIN_REJECTED':
             return {...state, fetching: false, error: action.payload.response.data && action.payload.response.data, user: null}
-        case 'SIGN_IN_FULFILLED':            
+        case 'LOGIN_FULFILLED':            
             return {...state, fetching: false, fetched: true, user: action.payload.data, error: null};
 
         default:

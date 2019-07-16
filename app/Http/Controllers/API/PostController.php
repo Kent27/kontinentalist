@@ -91,7 +91,7 @@ class PostController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'title' => 'required_without_all:content|string|unique:posts|max:255',         
+            'title' => 'required_without_all:content|string|max:255|unique:posts,title,'.$post->id,         
             'content' => 'required_without_all:title|string'  
         ]);
         if ($validator->fails()) {
