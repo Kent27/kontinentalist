@@ -46,7 +46,7 @@ cd kontinentalist
 
 ### **2. Scripts**
 
-- `bash generate.sh` -> for first time installing
+- `bash generate.sh` -> for first time installing and starting docker containers
 - `bash start.sh` -> for starting docker containers on second time and so on 
 - `bash stop.sh` -> for stopping running containers without removing them
 - `docker-compose down` -> for stopping containers and removes containers, networks, volumes, and images created by `up`.
