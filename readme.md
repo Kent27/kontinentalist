@@ -3,7 +3,7 @@
 ## Alvin's Task Description
 
 - Using [Laravel](https://laravel.com/) as PHP framework
-- Using [React](https://reactjs.org/) as SPA frontend JavaScript library
+- Using [React](https://reactjs.org/) as SPA frontend JavaScript library, located under `resources/js/`
 - Using [Docker](https://www.docker.com/) as web app container
 - Route:
     - **Webpage**: Using SPA [React-Router-DOM](https://reacttraining.com/react-router/web/guides/quick-start)
@@ -58,7 +58,7 @@ After running `bash generate.sh`, you will see the Client ID and Client Secret i
 - Client ID 2 is for password grant client
 Since we use password grant token method, copy the value of Client ID 2 and the secret to `.env` file, `PASSPORT_CLIENT_ID` and `PASSPORT_CLIENT_SECRET`
 
-![passport-instruction](readme/passport-instruction.png)
+![passport-instruction](readme/passport-instruction.gif)
 
 
 Then web application is available on [http://localhost:8080/](http://localhost:8080/)
